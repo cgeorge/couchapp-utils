@@ -1,6 +1,6 @@
 # couchapp-utils: Making CouchApp development a little more relaxing.
 
-CouchApps are web applications that run entirely on a CouchDB server. The (CouchApp)[https://github.com/couchapp/couchapp] scripts make it easy to create and deploy these applications.
+CouchApps are web applications that run entirely on a CouchDB server. The [CouchApp](https://github.com/couchapp/couchapp) scripts make it easy to create and deploy these applications.
 
 This project is aimed at creating some additional scripts that work along side couchapp to make application development process even easier.
 
