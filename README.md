@@ -35,11 +35,11 @@ Until there is a normal python install script, the easiest method is to unpack e
 This allows multiple couchapps to be proxied at the same time.
 
 ### TODO List
- *Pass as many tests in Futon as possible (currently at 49/66)
- *Automatically parse the couchapp directories to simplify the json configuration files.
+- Pass as many tests in Futon as possible (currently at 49/66)
+- Automatically parse the couchapp directories to simplify the json configuration files.
  
 ### Known Issues / Limitations
- *The proxy doesn't handle long polling urls like _changes correctly since the response from couchdb is being buffered.
+- The proxy doesn't handle long polling urls like _changes correctly since the response from couchdb is being buffered.
  
 ### License
 
