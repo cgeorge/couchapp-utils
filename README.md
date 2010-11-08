@@ -15,7 +15,7 @@ In this case it would be more convenient to simple serve all the static files fr
 
 To achieve this a configuration script needs to be written to map between the applications URL space and the source files.
 
-    $ couchapp-run [config.json] [port]
+    $ python couchapp-run.py [config.json] [port]
 
 Now the application can be accessed via the proxy port (defaults to 8000) and changes to the static files will automatically show up with just a page refresh.
 
@@ -27,8 +27,20 @@ will push all the changes to CouchDB server and the app can be accessed without 
 
 ### Server side couchapp developement
 
-For now the normal couchapp push utility will be needed to update the design document itself (which is required for modifying the server side of a couchapp).
+For now the normal couchapp push utility will be needed to update the design document itself 
 
+### Installation
+
+Until there is a normal python install script, the easiest method is to unpack everything one directory above the couchapps to be proxied.
+This allows multiple couchapps to be proxied at the same time.
+
+### TODO List
+ *Pass as many tests in Futon as possible (currently at 49/66)
+ *Automatically parse the couchapp directories to simplify the json configuration files.
+ 
+### Known Issues / Limitations
+ *The proxy doesn't handle long polling urls like _changes correctly since the response from couchdb is being buffered.
+ 
 ### License
 
 couchapp-utils is licensed the same as CouchApp which is the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)

@@ -1,0 +1,11 @@
+{
+	"apps" : [ {"path": "/testdb/_design/doc", 
+			    "src" : "testdb\\_attachments", 
+				"url" : "http://localhost:5984/testdb/_design/doc"} ,
+				
+				{"path": "/", 
+			    "url" : "http://localhost:5984/"} 
+				],
+				
+	"remote" : "http://localhost:5984"
+}
