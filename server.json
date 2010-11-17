@@ -1,11 +1,10 @@
 {
-	"apps" : [ {"path": "/testdb/_design/doc", 
-			    "src" : "testdb\\_attachments", 
-				"url" : "http://localhost:5984/testdb/_design/doc"} ,
-				
-				{"path": "/", 
-			    "url" : "http://localhost:5984/"} 
-				],
-				
-	"remote" : "http://localhost:5984"
+	"apps" : {"testdb_dirname" : "testdb_dbname"},
+	"remote_scheme" : "http",
+	"remote_host" : "localhost",
+	"remote_port" : 5984,
+    "options" : {"gzip"     : true,
+                 "chunked"  : true,
+                 "cache"    : true,
+                 "modified" : true}
 }

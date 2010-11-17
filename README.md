@@ -13,9 +13,7 @@ For purely client side application development, its tedious to constantly run:
 
 In this case it would be more convenient to simple serve all the static files from the local filesystem and proxy the dymanic URLs to the CouchDB test server.
 
-To achieve this a configuration script needs to be written to map between the applications URL space and the source files.
-
-    $ python couchapp-run.py [config.json] [port]
+    $ couchapp runproxy [OPTIONS] [CONFIG_JSON] 
 
 Now the application can be accessed via the proxy port (defaults to 8000) and changes to the static files will automatically show up with just a page refresh.
 
@@ -31,16 +29,13 @@ For now the normal couchapp push utility will be needed to update the design doc
 
 ### Installation
 
-Until there is a normal python install script, the easiest method is to unpack everything one directory above the couchapps to be proxied.
-This allows multiple couchapps to be proxied at the same time.
+The easiest installation is to put runproxy.py and server.json one directory above the couchapps to be proxied. You can then run the script from that directory or from within a couchapp. The config file should be found either way.
 
-### TODO List
-- Pass as many tests in Futon as possible (currently at 49/66)
-- Automatically parse the couchapp directories to simplify the json configuration files.
- 
-### Known Issues / Limitations
-- The proxy doesn't handle long polling urls like _changes correctly since the response from couchdb is being buffered.
- 
+The runproxy.py script can also be installed as a couchapp extension module so that it can be called like any other couchapp command:
+    - copy runproxy.py to the couchapp/ext directory
+    - add the line "runproxy=couchapp.ext.runproxy" to entry_points.txt in couchapp/EGG-INFO
+    - copy the file .couchapp.conf to ~/.couchapp.conf or modify your existing one
+
 ### License
 
 couchapp-utils is licensed the same as CouchApp which is the [Apache 2.0 License](http://www.apache.org/licenses/LICENSE-2.0)
