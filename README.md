@@ -23,6 +23,16 @@ After some relaxing client side coding is complete
 
 will push all the changes to CouchDB server and the app can be accessed without the proxy.
 
+### Attachments to regular documents
+
+The proxy server will also serve attachments to regular documents from the local file if they are defined in the couchapp directory under the _docs folder.
+
+This makes it easy to have a single database of common static files to be shared amoung several couchapps. Using regular documents instead of couchapp's default behavior of attaching to design documents allows any URL path to be used for the static resources (without requiring a path entry for the design document itself).
+    
+    - db_dir\_docs\js\_attachments\... ==> db_name/js/...
+    - db_dir\_docs\css\_attachments\... ==> db_name/css/...
+    
+
 ### Server side couchapp developement
 
 For now the normal couchapp push utility will be needed to update the design document itself 
