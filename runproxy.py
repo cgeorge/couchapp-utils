@@ -280,7 +280,7 @@ class FileRequestThread(threading.Thread):
         if not os.path.exists(path) or not os.path.isfile(path):
             response["Content-Type"]  = "text/plain;charset=utf-8"
             self.send_response(handler, "404 Object Not Found", response,
-                               self.json_error("not_found", "Document is missing attachement"), True)
+                               self.json_error("not_found", "Document is missing attachment"), True)
             return False
 
         cache_header, cache_content = self.pool.cache_get(path)
@@ -1076,6 +1076,19 @@ class ProxyServer (asyncore.dispatcher):
 
             parent, current = os.path.split(root)
 
+            # Find regular documents with attachments
+            if parent.endswith("_docs"):
+                p, _ = os.path.split(parent)
+                _, db_name = os.path.split(p)
+
+                db_name = self.config["apps"].get(db_name, db_name)
+                db_id = current
+                if "_id" in files:
+                    with open(os.path.join(root, "_id"), "rt") as f:
+                        db_id = f.readlines()[0].strip()
+
+                db_dirs[root] = [db_name, db_id]
+
             # Find all design documents
             if parent == proxy_root:
                 db_name = self.config["apps"].get(current, current)
@@ -1086,12 +1099,12 @@ class ProxyServer (asyncore.dispatcher):
 
                 db_dirs[root] = [db_name, db_id]
 
-            # Find attachement directories on the design document or on a vendor path
+            # Find attachment directories on the design document or on a vendor path
             if current == "_attachments":
                 attach_dirs.append(root)
 
             # Prevent following special directories
-            if current in ["_docs", "_attachments"] or current.startswith("."):
+            if current in ["_attachments"] or current.startswith("."):
                 dirs[:] = []
 
         urls = self.config['urls']
@@ -1103,9 +1116,13 @@ class ProxyServer (asyncore.dispatcher):
             else:
                 item[2] = re.compile(item[0], re.IGNORECASE)
 
-        # Combind the app db directories with the attachment directories into a rewrite url
+        # Get all the document root paths in longest to shortest order
+        db_roots = sorted(db_dirs.keys(), reverse=True)
+
+        # Iterate thru each attachment directory
         for path in attach_dirs:
-            for key in db_dirs.keys():
+            # And find the associated document
+            for key in db_roots:
                 if path.startswith(key):
                     no_root, _ = os.path.split(path[len(key):])
                     no_root = no_root.strip(os.path.sep)
@@ -1114,6 +1131,10 @@ class ProxyServer (asyncore.dispatcher):
                         parts.extend(no_root.split(os.path.sep))
                     url = "/".join(parts)
                     urls.append( [url, path, re.compile("/%s/([^_].*)" % url, re.IGNORECASE)] )
+
+                    # There should be only one document per attachment directory
+                    # but there might be other startswith matches so stop looking
+                    break
 
         # Sort urls longest to shortest so the most specific regular expressions are listed first
         self.config['urls'] = urls = sorted(urls,reverse = True)
